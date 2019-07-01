@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="338d3a2ddc0549bcadfaef0a16e06d8c" Name="Diagram1">
+        <EntityTypeShape EntityType="FitnessHoleModel.Employee" Width="1.5" PointX="5" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitnessHoleModel.Package" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitnessHoleModel.Role" Width="1.5" PointX="2.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitnessHoleModel.Service" Width="1.5" PointX="5.5" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitnessHoleModel.ServicesToPackage" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <AssociationConnector Association="FitnessHoleModel.FK__Employees__RoleI__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="FitnessHoleModel.FK__ServicesT__Packa__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="FitnessHoleModel.FK__ServicesT__Servi__4AB81AF0" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FitnessHoleModel.Customer" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="FitnessHoleModel.OrderDetailsService" Width="1.5" PointX="9.5" PointY="4.25" />
+        <EntityTypeShape EntityType="FitnessHoleModel.ServicesOrder" Width="1.5" PointX="7.25" PointY="6.125" />
+        <AssociationConnector Association="FitnessHoleModel.FK__ServicesO__Custo__7A672E12" />
+        <AssociationConnector Association="FitnessHoleModel.FK__ServicesO__Emplo__7B5B524B" />
+        <AssociationConnector Association="FitnessHoleModel.FK__OrderDeta__Order__7E37BEF6" />
+        <AssociationConnector Association="FitnessHoleModel.FK__OrderDeta__Servi__7F2BE32F" />
+        <EntityTypeShape EntityType="FitnessHoleModel.PackageOrder" Width="1.5" PointX="10.25" PointY="7.125" />
+        <AssociationConnector Association="FitnessHoleModel.FK__PackageOr__Custo__09A971A2" />
+        <AssociationConnector Association="FitnessHoleModel.FK__PackageOr__Emplo__0A9D95DB" />
+        <AssociationConnector Association="FitnessHoleModel.FK__PackageOr__Packa__0B91BA14" />
+        <EntityTypeShape EntityType="FitnessHoleModel.OutCome" Width="1.5" PointX="8.375" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

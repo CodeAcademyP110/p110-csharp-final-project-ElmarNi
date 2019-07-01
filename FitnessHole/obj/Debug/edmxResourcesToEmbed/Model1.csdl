@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FitnessHoleModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="RoleId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Role" Relationship="Self.FK__Employees__RoleI__5FB337D6" FromRole="Employees" ToRole="Roles" />
+    <Property Name="isVerifiedPass" Type="Boolean" />
+    <Property Name="Status" Type="Boolean" Nullable="false" DefaultValue="true" />
+    <NavigationProperty Name="ServicesOrders" Relationship="FitnessHoleModel.FK__ServicesO__Emplo__7B5B524B" FromRole="Employee" ToRole="ServicesOrder" />
+    <NavigationProperty Name="PackageOrders" Relationship="FitnessHoleModel.FK__PackageOr__Emplo__0A9D95DB" FromRole="Employee" ToRole="PackageOrder" />
+  </EntityType>
+  <EntityType Name="Package">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="isActiveAllDays" Type="Boolean" />
+    <Property Name="isActiveEvenDays" Type="Boolean" />
+    <Property Name="isActiveOddDays" Type="Boolean" />
+    <NavigationProperty Name="ServicesToPackages" Relationship="Self.FK__ServicesT__Packa__49C3F6B7" FromRole="Packages" ToRole="ServicesToPackages" />
+    <Property Name="Status" Type="Boolean" DefaultValue="true" />
+    <NavigationProperty Name="PackageOrders" Relationship="FitnessHoleModel.FK__PackageOr__Packa__0B91BA14" FromRole="Package" ToRole="PackageOrder" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Role1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK__Employees__RoleI__5FB337D6" FromRole="Roles" ToRole="Employees" />
+  </EntityType>
+  <EntityType Name="Service">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ServiceName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PricePerHours" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="LimitlessPrice" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <NavigationProperty Name="ServicesToPackages" Relationship="Self.FK__ServicesT__Servi__4AB81AF0" FromRole="Services" ToRole="ServicesToPackages" />
+    <Property Name="Status" Type="Boolean" DefaultValue="true" />
+    <NavigationProperty Name="OrderDetailsServices" Relationship="FitnessHoleModel.FK__OrderDeta__Servi__7F2BE32F" FromRole="Service" ToRole="OrderDetailsService" />
+  </EntityType>
+  <EntityType Name="ServicesToPackage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PackagesId" Type="Int32" />
+    <Property Name="ServicesId" Type="Int32" />
+    <NavigationProperty Name="Package" Relationship="Self.FK__ServicesT__Packa__49C3F6B7" FromRole="ServicesToPackages" ToRole="Packages" />
+    <NavigationProperty Name="Service" Relationship="Self.FK__ServicesT__Servi__4AB81AF0" FromRole="ServicesToPackages" ToRole="Services" />
+  </EntityType>
+  <Association Name="FK__Employees__RoleI__5FB337D6">
+    <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ServicesT__Packa__49C3F6B7">
+    <End Role="Packages" Type="Self.Package" Multiplicity="0..1" />
+    <End Role="ServicesToPackages" Type="Self.ServicesToPackage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Packages">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ServicesToPackages">
+        <PropertyRef Name="PackagesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ServicesT__Servi__4AB81AF0">
+    <End Role="Services" Type="Self.Service" Multiplicity="0..1" />
+    <End Role="ServicesToPackages" Type="Self.ServicesToPackage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Services">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ServicesToPackages">
+        <PropertyRef Name="ServicesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FitnessHoleEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Packages" EntityType="Self.Package" />
+    <EntitySet Name="Roles" EntityType="Self.Role" />
+    <EntitySet Name="Services" EntityType="Self.Service" />
+    <EntitySet Name="ServicesToPackages" EntityType="Self.ServicesToPackage" />
+    <AssociationSet Name="FK__Employees__RoleI__5FB337D6" Association="Self.FK__Employees__RoleI__5FB337D6">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ServicesT__Packa__49C3F6B7" Association="Self.FK__ServicesT__Packa__49C3F6B7">
+      <End Role="Packages" EntitySet="Packages" />
+      <End Role="ServicesToPackages" EntitySet="ServicesToPackages" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ServicesT__Servi__4AB81AF0" Association="Self.FK__ServicesT__Servi__4AB81AF0">
+      <End Role="Services" EntitySet="Services" />
+      <End Role="ServicesToPackages" EntitySet="ServicesToPackages" />
+    </AssociationSet>
+    <EntitySet Name="Customers" EntityType="FitnessHoleModel.Customer" />
+    <EntitySet Name="OrderDetailsServices" EntityType="FitnessHoleModel.OrderDetailsService" />
+    <EntitySet Name="ServicesOrders" EntityType="FitnessHoleModel.ServicesOrder" />
+    <AssociationSet Name="FK__ServicesO__Custo__7A672E12" Association="FitnessHoleModel.FK__ServicesO__Custo__7A672E12">
+      <End Role="Customer" EntitySet="Customers" />
+      <End Role="ServicesOrder" EntitySet="ServicesOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ServicesO__Emplo__7B5B524B" Association="FitnessHoleModel.FK__ServicesO__Emplo__7B5B524B">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="ServicesOrder" EntitySet="ServicesOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderDeta__Order__7E37BEF6" Association="FitnessHoleModel.FK__OrderDeta__Order__7E37BEF6">
+      <End Role="ServicesOrder" EntitySet="ServicesOrders" />
+      <End Role="OrderDetailsService" EntitySet="OrderDetailsServices" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OrderDeta__Servi__7F2BE32F" Association="FitnessHoleModel.FK__OrderDeta__Servi__7F2BE32F">
+      <End Role="Service" EntitySet="Services" />
+      <End Role="OrderDetailsService" EntitySet="OrderDetailsServices" />
+    </AssociationSet>
+    <EntitySet Name="PackageOrders" EntityType="FitnessHoleModel.PackageOrder" />
+    <AssociationSet Name="FK__PackageOr__Custo__09A971A2" Association="FitnessHoleModel.FK__PackageOr__Custo__09A971A2">
+      <End Role="Customer" EntitySet="Customers" />
+      <End Role="PackageOrder" EntitySet="PackageOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PackageOr__Emplo__0A9D95DB" Association="FitnessHoleModel.FK__PackageOr__Emplo__0A9D95DB">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="PackageOrder" EntitySet="PackageOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PackageOr__Packa__0B91BA14" Association="FitnessHoleModel.FK__PackageOr__Packa__0B91BA14">
+      <End Role="Package" EntitySet="Packages" />
+      <End Role="PackageOrder" EntitySet="PackageOrders" />
+    </AssociationSet>
+    <EntitySet Name="OutComes" EntityType="FitnessHoleModel.OutCome" />
+  </EntityContainer>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CardNo" Type="Int32" />
+    <NavigationProperty Name="ServicesOrders" Relationship="FitnessHoleModel.FK__ServicesO__Custo__7A672E12" FromRole="Customer" ToRole="ServicesOrder" />
+    <NavigationProperty Name="PackageOrders" Relationship="FitnessHoleModel.FK__PackageOr__Custo__09A971A2" FromRole="Customer" ToRole="PackageOrder" />
+  </EntityType>
+  <EntityType Name="OrderDetailsService">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderId" Type="Int32" />
+    <Property Name="ServiceId" Type="Int32" />
+    <NavigationProperty Name="ServicesOrder" Relationship="FitnessHoleModel.FK__OrderDeta__Order__7E37BEF6" FromRole="OrderDetailsService" ToRole="ServicesOrder" />
+    <NavigationProperty Name="Service" Relationship="FitnessHoleModel.FK__OrderDeta__Servi__7F2BE32F" FromRole="OrderDetailsService" ToRole="Service" />
+  </EntityType>
+  <EntityType Name="ServicesOrder">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" />
+    <Property Name="EmployeeId" Type="Int32" />
+    <Property Name="Datetime" Type="DateTime" Precision="3" />
+    <Property Name="Price" Type="Int32" />
+    <NavigationProperty Name="Customer" Relationship="FitnessHoleModel.FK__ServicesO__Custo__7A672E12" FromRole="ServicesOrder" ToRole="Customer" />
+    <NavigationProperty Name="Employee" Relationship="FitnessHoleModel.FK__ServicesO__Emplo__7B5B524B" FromRole="ServicesOrder" ToRole="Employee" />
+    <NavigationProperty Name="OrderDetailsServices" Relationship="FitnessHoleModel.FK__OrderDeta__Order__7E37BEF6" FromRole="ServicesOrder" ToRole="OrderDetailsService" />
+  </EntityType>
+  <Association Name="FK__ServicesO__Custo__7A672E12">
+    <End Type="FitnessHoleModel.Customer" Role="Customer" Multiplicity="0..1" />
+    <End Type="FitnessHoleModel.ServicesOrder" Role="ServicesOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ServicesOrder">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ServicesO__Emplo__7B5B524B">
+    <End Type="FitnessHoleModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="FitnessHoleModel.ServicesOrder" Role="ServicesOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ServicesOrder">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderDeta__Order__7E37BEF6">
+    <End Type="FitnessHoleModel.ServicesOrder" Role="ServicesOrder" Multiplicity="0..1" />
+    <End Type="FitnessHoleModel.OrderDetailsService" Role="OrderDetailsService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ServicesOrder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderDetailsService">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OrderDeta__Servi__7F2BE32F">
+    <End Type="FitnessHoleModel.Service" Role="Service" Multiplicity="0..1" />
+    <End Type="FitnessHoleModel.OrderDetailsService" Role="OrderDetailsService" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Service">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderDetailsService">
+        <PropertyRef Name="ServiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PackageOrder">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" />
+    <Property Name="EmployeeId" Type="Int32" />
+    <Property Name="PackageId" Type="Int32" />
+    <Property Name="DateTime" Type="DateTime" Precision="3" />
+    <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+    <NavigationProperty Name="Customer" Relationship="FitnessHoleModel.FK__PackageOr__Custo__09A971A2" FromRole="PackageOrder" ToRole="Customer" />
+    <NavigationProperty Name="Employee" Relationship="FitnessHoleModel.FK__PackageOr__Emplo__0A9D95DB" FromRole="PackageOrder" ToRole="Employee" />
+    <NavigationProperty Name="Package" Relationship="FitnessHoleModel.FK__PackageOr__Packa__0B91BA14" FromRole="PackageOrder" ToRole="Package" />
+  </EntityType>
+  <Association Name="FK__PackageOr__Custo__09A971A2">
+    <End Type="FitnessHoleModel.Customer" Role="Customer" Multiplicity="0..1" />
+    <End Type="FitnessHoleModel.PackageOrder" Role="PackageOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PackageOrder">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PackageOr__Emplo__0A9D95DB">
+    <End Type="FitnessHoleModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="FitnessHoleModel.PackageOrder" Role="PackageOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PackageOrder">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PackageOr__Packa__0B91BA14">
+    <End Type="FitnessHoleModel.Package" Role="Package" Multiplicity="0..1" />
+    <End Type="FitnessHoleModel.PackageOrder" Role="PackageOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Package">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PackageOrder">
+        <PropertyRef Name="PackageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="OutCome">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WhatFor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Int32" />
+  </EntityType>
+</Schema>
